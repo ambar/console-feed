@@ -22,14 +22,29 @@ const customStringify = function (v) {
   })
 }
 
+const getTheme = (props: Props) => ({
+  variant: props.variant || 'light',
+  styles: {
+    ...Styles(props),
+    ...props.styles,
+  },
+})
+
 class Console extends React.PureComponent<Props, any> {
-  theme = () => ({
-    variant: this.props.variant || 'light',
-    styles: {
-      ...Styles(this.props),
-      ...this.props.styles,
-    },
-  })
+  state = {
+    theme: getTheme(this.props),
+    prevVariant: this.props.variant,
+  }
+
+  static getDerivedStateFromProps(props, state) {
+    if (props.variant !== state.prevVariant) {
+      return {
+        prevVariant: props.variant,
+        theme: getTheme(props),
+      }
+    }
+    return null
+  }
 
   render() {
     let {
@@ -81,7 +96,7 @@ class Console extends React.PureComponent<Props, any> {
     }
 
     return (
-      <ThemeProvider theme={this.theme}>
+      <ThemeProvider theme={this.state.theme}>
         <Root>
           {logs.map((log, i) => {
             // If the filter is defined and doesn't include the method
