@@ -1,4 +1,5 @@
 import * as React from 'react'
+import InlineCenter from 'react-inline-center'
 import { MessageProps, Theme } from '../definitions/Component'
 import { ThemeProvider } from 'emotion-theming'
 
@@ -26,7 +27,9 @@ class ConsoleMessage extends React.Component<MessageProps, any> {
     return (
       <ThemeProvider theme={this.theme}>
         <Message data-method={log.method}>
-          {log.amount > 1 ? <AmountIcon>{log.amount}</AmountIcon> : <Icon />}
+          <InlineCenter>
+            {log.amount > 1 ? <AmountIcon>{log.amount}</AmountIcon> : <Icon />}
+          </InlineCenter>
           <Content>{this.getNode()}</Content>
         </Message>
       </ThemeProvider>
