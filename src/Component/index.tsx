@@ -33,14 +33,19 @@ const getTheme = (props: Props) => ({
 class Console extends React.PureComponent<Props, any> {
   state = {
     theme: getTheme(this.props),
+    prevStyles: this.props.styles,
     prevVariant: this.props.variant,
   }
 
   static getDerivedStateFromProps(props, state) {
-    if (props.variant !== state.prevVariant) {
+    if (
+      props.variant !== state.prevVariant ||
+      JSON.stringify(props.styles) !== JSON.stringify(props.prevStyles)
+    ) {
       return {
-        prevVariant: props.variant,
         theme: getTheme(props),
+        prevStyles: props.styles,
+        prevVariant: props.variant,
       }
     }
     return null
